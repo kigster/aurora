@@ -41,7 +41,7 @@
 #include "Externs.h"
 
 const int bandCount = 7;
-// the 10Bit (0-1023) audio band values
+// the 10Bit (0-1023) audio band vales
 int levels[bandCount];
 int peaks[bandCount];
 static const int defaultPeakDecay = 8;

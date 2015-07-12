@@ -45,9 +45,13 @@ public:
   int currentIndex = 0;
   int previousIndex = -1;
 
-  bool visible = true;
+  bool visible = false;
   bool clockVisible = false;
   bool messageVisible = false;
+
+  unsigned int changePlaylistEvery = 16000;
+  unsigned int lastPlayListChange = 0;
+  bool autoChangePlaylist = true;
 
   unsigned int playMode = Paused;
   unsigned int autoPlayTimeout = 0;
@@ -102,7 +106,7 @@ public:
         isRunnable = currentMenuItem->drawable->isRunnable();
 
         if (playMode != Paused) {
-          autoPlayTimeout = millis() + (autoPlayDurationSeconds * 1000);
+          autoPlayTimeout = millis() + autoPlayDurationSeconds;
         }
       }
 
@@ -376,6 +380,18 @@ public:
                 currentPlaylist->moveRandom(1);
 
               autoPlayTimeout = millis() + (autoPlayDurationSeconds * 1000);
+
+//              autoPlayTimeout = millis() + ((autoPlayDurationSeconds + random(autoPlayDurationSeconds)) * 1000);
+
+              // change playlist too
+              if (millis() - lastPlayListChange > changePlaylistEvery) {
+                if (lastPlayListChange != 0) {
+                    if (currentIndex < 2) {
+                        currentIndex = abs(1 - currentIndex);
+                    }
+                }
+                lastPlayListChange = millis();
+              }
               break;
             }
           }

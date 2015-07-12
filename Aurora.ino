@@ -52,7 +52,7 @@ SmartMatrix matrix;
 IRrecv irReceiver(IR_RECV_PIN);
 
 boolean hasDS1307RTC = false;
-boolean hasTeensyRTC = false;
+boolean hasTeensyRTC = true;
 
 rotationDegrees rotation = rotation0;
 
@@ -92,7 +92,7 @@ GifPlayer gifPlayer;
 #include "Geometry.h"
 
 tmElements_t time;
-bool isTimeAvailable = false;
+bool isTimeAvailable = true;
 
 #include "ClockDigitalShort.h"
 ClockDigitalShort clockDigitalShort;
@@ -125,8 +125,8 @@ Weather weather;
 
 #include "Bitmaps.h"
 
-rgb24 menuColor = CRGB(CRGB::Blue);
-int autoPlayDurationSeconds = 10;
+rgb24 menuColor = CRGB(CRGB::LightPink);
+int autoPlayDurationSeconds = 8;
 
 #include "StreamingMode.h"
 StreamingMode streamingMode;
@@ -254,8 +254,8 @@ void setup()
   // set date time callback function
   SdFile::dateTimeCallback(dateTime);
 
-  // default to patterns
-  menu.currentIndex = 1;
+  // default to audio patterns
+  menu.currentIndex = 0;
 
   if (sdAvailable) {
     loadRemotesSetting();
@@ -283,8 +283,10 @@ void setup()
   }
 
   if (!HAS_IR) {
-    menu.playMode = Menu::PlaybackState::Autoplay;
     menu.visible = false;
+    menu.playMode = Menu::PlaybackState::Autoplay;
+  } else {
+    menu.playMode = Menu::PlaybackState::Random;
   }
 
   menuItemAudioPatterns.visible = enableAudioPatterns;
@@ -295,7 +297,7 @@ void setup()
   menuItemPatterns.paletteEnabled = true;
 
   menuItemAnimations.visible = sdAvailable && animations.imageCount > 0;
-  menuItemAnimations.playModeEnabled = true;
+  menuItemAnimations.playModeEnabled = true ;
 }
 
 void loadOverlaySettings() {

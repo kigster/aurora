@@ -106,25 +106,25 @@ class Patterns : public Playlist {
       return currentIndex;
     }
 
-    static const int PATTERN_COUNT = 36;
+    static const int PATTERN_COUNT = 31;
 
     Drawable* shuffledItems[PATTERN_COUNT];
 
     Drawable* items[PATTERN_COUNT] = {
       //&pongClock,
       &spiro,
-      &paletteSmear,
+//      &paletteSmear,
       &multipleStream8,
       &multipleStream5,
       &multipleStream3,
-      &radar,
+//      &radar,
       &multipleStream4,
       &multipleStream2,
       &life,
       &flowField,
-      &pendulumWave,
-      &incrementalDrift,
-      &incrementalDrift2,
+//      &pendulumWave,
+//      &incrementalDrift,
+//      &incrementalDrift2,
       &munch,
       &electricMandala,
       &spin,

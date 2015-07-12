@@ -31,7 +31,7 @@
 #define AudioPatterns_H
 class AudioPatterns : public Playlist {
   public:
-    bool paused = true;
+    bool paused = false;
 
     bool drawPeaks = true;
 
@@ -44,50 +44,87 @@ class AudioPatterns : public Playlist {
 
     AudioPatternFunctionPointer currentItem;
 
-    static const int PATTERN_COUNT = 39;
-
-    AudioPatternFunctionPointer shuffledItems[PATTERN_COUNT];
+    static const int PATTERN_COUNT = 31;
 
     AudioPatternFunctionPointer items[PATTERN_COUNT] = {
-      &AudioPatterns::analyzerColumns,
-      &AudioPatterns::analyzerPixels,
-      &AudioPatterns::lineChart,
-      &AudioPatterns::radar,
-      &AudioPatterns::gauge,
-      &AudioPatterns::gauge2,
-      &AudioPatterns::paletteSmear,
-      &AudioPatterns::bounce,
-      &AudioPatterns::incrementalDrift,
-      &AudioPatterns::incrementalDrift2,
-      &AudioPatterns::pendulumWave,
-      &AudioPatterns::fire,
-      &AudioPatterns::analyzerPixelsWithNoiseSmearing,
-      &AudioPatterns::analyzerColumnsWithNoiseSmearing,
-      &AudioPatterns::randomEmittersWithNoiseSmearing,
-      &AudioPatterns::lineChartWithNoiseSmearing,
-      &AudioPatterns::analyzerPixelsWithOneLargeSpiral,
-      &AudioPatterns::analyzerPixelsWithFiveSpirals,
-      &AudioPatterns::analyzerPixelsWithStreamDown120,
-      &AudioPatterns::analyzerPixelsWithStreamUpAndLeft120,
-      &AudioPatterns::analyzerPixelsWithStreamUp120,
-      &AudioPatterns::analyzerPixelsWithStreamUpAndRight120,
-      &AudioPatterns::analyzerPixelsMirroredVerticallyWithFiveSpirals,
-      &AudioPatterns::analyzerColumnsWithOneLargeSpiralStream,
-      &AudioPatterns::analyzerColumnsWithVerticalStream170,
-      &AudioPatterns::fallingSpectrogramPaletteSpectrum,
-      &AudioPatterns::fallingWavySpectrogram,
-      &AudioPatterns::fallingSpectrogram,
-      &AudioPatterns::randomEmitters,
-      &AudioPatterns::linesFromCenterToOutside,
-      &AudioPatterns::analyzerPixelsX4,
-      &AudioPatterns::areaChart,
-      &AudioPatterns::lineChartWithHorizontalStream,
-      &AudioPatterns::lineChartWithSpiral,
-      &AudioPatterns::lineChartWithSpirals,
-      &AudioPatterns::circles,
-      &AudioPatterns::boxes,
-      &AudioPatterns::spiralSpectrum,
-      &AudioPatterns::spiralSpectrum2,
+
+      &AudioPatterns::gauge,                                            // yes
+      &AudioPatterns::gauge2,                                           // yes
+      &AudioPatterns::paletteSmear,                                     // very bright but pretty
+      &AudioPatterns::incrementalDrift,                                 // YES
+      &AudioPatterns::incrementalDrift2,                                // YES
+      &AudioPatterns::analyzerPixelsWithNoiseSmearing,                  // YES
+      &AudioPatterns::analyzerColumnsWithNoiseSmearing,                 // YES
+      &AudioPatterns::lineChartWithNoiseSmearing,                       // GRP1
+      &AudioPatterns::analyzerPixelsWithOneLargeSpiral,                 // GRP1
+      &AudioPatterns::analyzerPixelsWithFiveSpirals,                    // GRP1
+      &AudioPatterns::analyzerPixelsWithStreamDown120,                  // GRP1
+      &AudioPatterns::analyzerPixelsWithStreamUpAndLeft120,             // GRP1
+      &AudioPatterns::analyzerPixelsWithStreamUp120,                    // GRP1
+      &AudioPatterns::analyzerPixelsWithStreamUpAndRight120,            // GRP1
+      &AudioPatterns::analyzerPixelsMirroredVerticallyWithFiveSpirals,  // GRP1
+      &AudioPatterns::fallingSpectrogramPaletteSpectrum,                // GRP2
+      &AudioPatterns::fallingWavySpectrogram,                           // GRP2
+      &AudioPatterns::fallingSpectrogram,                               // GRP2
+      &AudioPatterns::fallingSpectrogramPaletteSpectrum,                // GRP2
+      &AudioPatterns::fallingWavySpectrogram,                           // GRP2
+      &AudioPatterns::fallingSpectrogram,                               // GRP2
+      &AudioPatterns::linesFromCenterToOutside,                         // Y
+      &AudioPatterns::analyzerPixelsX4,                                 // Y
+      &AudioPatterns::circles,                                          // GRP3
+      &AudioPatterns::circles,                                          // GRP3
+      &AudioPatterns::boxes,                                            // GRP3
+      &AudioPatterns::boxes,                                            // GRP3
+      &AudioPatterns::spiralSpectrum,                                   // GRP4
+      &AudioPatterns::spiralSpectrum2,                                   // GRP4
+      &AudioPatterns::spiralSpectrum2,                                   // GRP4
+      &AudioPatterns::spiralSpectrum2                                   // GRP4
+};
+
+//      static const int PATTERN_COUNT = 39;
+//      AudioPatternFunctionPointer shuffledItems[PATTERN_COUNT];
+//
+//      AudioPatternFunctionPointer items[PATTERN_COUNT] = {
+//          &AudioPatterns::analyzerColumns,
+//          &AudioPatterns::analyzerPixels,
+//          &AudioPatterns::lineChart,
+//          &AudioPatterns::radar,
+//          &AudioPatterns::gauge,
+//          &AudioPatterns::gauge2,
+//          &AudioPatterns::paletteSmear,
+//          &AudioPatterns::bounce,
+//          &AudioPatterns::incrementalDrift,
+//          &AudioPatterns::incrementalDrift2,
+//          &AudioPatterns::pendulumWave,
+//          &AudioPatterns::fire,
+//          &AudioPatterns::analyzerPixelsWithNoiseSmearing,
+//          &AudioPatterns::analyzerColumnsWithNoiseSmearing,
+//          &AudioPatterns::randomEmittersWithNoiseSmearing,
+//          &AudioPatterns::lineChartWithNoiseSmearing,
+//          &AudioPatterns::analyzerPixelsWithOneLargeSpiral,
+//          &AudioPatterns::analyzerPixelsWithFiveSpirals,
+//          &AudioPatterns::analyzerPixelsWithStreamDown120,
+//          &AudioPatterns::analyzerPixelsWithStreamUpAndLeft120,
+//          &AudioPatterns::analyzerPixelsWithStreamUp120,
+//          &AudioPatterns::analyzerPixelsWithStreamUpAndRight120,
+//          &AudioPatterns::analyzerPixelsMirroredVerticallyWithFiveSpirals,
+//          &AudioPatterns::analyzerColumnsWithOneLargeSpiralStream,
+//          &AudioPatterns::analyzerColumnsWithVerticalStream170,
+//          &AudioPatterns::fallingSpectrogramPaletteSpectrum,
+//          &AudioPatterns::fallingWavySpectrogram,
+//          &AudioPatterns::fallingSpectrogram,
+//          &AudioPatterns::randomEmitters,
+//          &AudioPatterns::linesFromCenterToOutside,
+//          &AudioPatterns::analyzerPixelsX4,
+//          &AudioPatterns::areaChart,
+//          &AudioPatterns::lineChartWithHorizontalStream,
+//          &AudioPatterns::lineChartWithSpiral,
+//          &AudioPatterns::lineChartWithSpirals,
+//          &AudioPatterns::circles,
+//          &AudioPatterns::boxes,
+//          &AudioPatterns::spiralSpectrum,
+//          &AudioPatterns::spiralSpectrum2,
+
       //      &AudioPatterns::viz2,
       //      &AudioPatterns::viz10,
       //      &AudioPatterns::radialPixels,
@@ -99,7 +136,9 @@ class AudioPatterns : public Playlist {
       //      &AudioPatterns::FunkyNoise4,
       //      &AudioPatterns::FunkyNoise5,
       //      &AudioPatterns::linesFromOutsideToCenter,
-    };
+//    };
+
+    AudioPatternFunctionPointer shuffledItems[PATTERN_COUNT];
 
     void circles() {
       effects.SpiralStream(15, 15, 16, 120);
@@ -1302,7 +1341,7 @@ class AudioPatterns : public Playlist {
       }
     }
 
-    char* Drawable::name = (char *)"Audio Patterns";
+    char* Drawable::name = (char *)"Audio Sensitive";
 
     void move(int step) {
       moveTo(currentIndex + step);
