@@ -60,7 +60,7 @@ class SettingsAutoplayDuration : public Runnable {
           case InputCommand::Select:
           case InputCommand::Back:
             if (hasChanges) {
-              saveAutoPlayDurationSeconds();
+//              saveAutoPlayDurationSeconds();
               hasChanges = false;
             }
             return;

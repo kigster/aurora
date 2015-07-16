@@ -67,6 +67,10 @@ class ClockDisplay : public Playlist {
       moveTo(random(0, itemCount));
     }
 
+    int itemsRealIndex() {
+        return currentIndex;
+    }
+
     void moveTo(int index) {
       currentIndex = index;
 

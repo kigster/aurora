@@ -69,6 +69,10 @@ class Animations : public Playlist {
       return true;
     }
 
+    int itemsRealIndex() {
+        return currentIndex;
+    }
+
     bool setAnimation(String name) {
       if (!SD.exists(path))
         return false;

@@ -106,49 +106,74 @@ class Patterns : public Playlist {
       return currentIndex;
     }
 
-    static const int PATTERN_COUNT = 31;
+    static const int PATTERN_COUNT = 22;
 
     Drawable* shuffledItems[PATTERN_COUNT];
 
     Drawable* items[PATTERN_COUNT] = {
-      //&pongClock,
       &spiro,
-//      &paletteSmear,
       &multipleStream8,
       &multipleStream5,
       &multipleStream3,
-//      &radar,
-      &multipleStream4,
       &multipleStream2,
       &life,
-      &flowField,
-//      &pendulumWave,
-//      &incrementalDrift,
-//      &incrementalDrift2,
+      &incrementalDrift,
+      &incrementalDrift2,
       &munch,
-      &electricMandala,
-      &spin,
-      &simplexNoise,
       &wave,
       &attract,
       &analogClock,
       &swirl,
-      &bounce,
       &flock,
-      &infinity,
-      &plasma,
       &invadersSmall,
       &invadersMedium,
       &invadersLarge,
       &snake,
       &cube,
-      &fire,
       &maze,
-      &pulse,
       &rainbowSmoke,
-      &spark,
-      &spiral,
+      &spiral
     };
+//
+//    Drawable* items[PATTERN_COUNT] = {
+//      //&pongClock,
+//      &spiro,
+////          &paletteSmear,
+//      &multipleStream8,
+//      &multipleStream5,
+//      &multipleStream3,
+////          &radar,
+////      &multipleStream4,
+//      &multipleStream2,
+//      &life,
+////      &flowField,
+////          &pendulumWave,
+//          &incrementalDrift,
+//          &incrementalDrift2,
+//      &munch,
+////      &electricMandala,
+////      &spin,
+////      &simplexNoise,
+//      &wave,
+//      &attract,
+//      &analogClock,
+//      &swirl,
+////      &bounce,
+//      &flock,
+////      &infinity,
+////      &plasma,
+//      &invadersSmall,
+//      &invadersMedium,
+//      &invadersLarge,
+//      &snake,
+//      &cube,
+////      &fire,
+//      &maze,
+////      &pulse,
+//      &rainbowSmoke,
+////      &spark,
+//      &spiral
+//    };
 
   public:
     Patterns() {
@@ -231,6 +256,13 @@ class Patterns : public Playlist {
 
       if (currentItem)
         currentItem->start();
+    }
+
+    int itemsRealIndex() {
+        for (int i = 0; i < PATTERN_COUNT; i++) {
+            if (currentItem == items[i])
+                return i;
+        }
     }
 
     unsigned int drawFrame() {

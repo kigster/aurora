@@ -31,7 +31,6 @@
 #include <FastLED.h>
 #include <IRremote.h>
 #include <SPI.h>
-#include <SD.h>
 
 #include <Wire.h>
 #include <Time.h>
@@ -82,8 +81,8 @@ Effects effects;
 
 #include "IrCodes.h"
 
-#include "GifPlayer.h"
-GifPlayer gifPlayer;
+//#include "GifPlayer.h"
+//GifPlayer gifPlayer;
 
 #include "Drawable.h"
 #include "Playlist.h"
@@ -115,8 +114,8 @@ Patterns patterns;
 #include "AudioPatterns.h"
 AudioPatterns audioPatterns;
 
-#include "Animations.h"
-Animations animations;
+//#include "Animations.h"
+//Animations animations;
 
 #if WEATHER > 0
 #include "Weather.h"
@@ -146,9 +145,10 @@ Settings settings;
 #include "SettingsSetTime.h"
 #include "SettingsMoveClock.h"
 
+
 MenuItem menuItemAudioPatterns = MenuItem(audioPatterns.name, &audioPatterns);
 MenuItem menuItemPatterns = MenuItem(patterns.name, &patterns);
-MenuItem menuItemAnimations = MenuItem(animations.name, &animations);
+//MenuItem menuItemAnimations = MenuItem(animations.name, &animations);
 #if GAMES > 0
 MenuItem menuItemGames = MenuItem(games.name, &games);
 #endif
@@ -161,7 +161,7 @@ MenuItem menuItemSettings = MenuItem(settings.name, &settings);
 MenuItem* mainMenuItems [] = {
   &menuItemAudioPatterns,
   &menuItemPatterns,
-  &menuItemAnimations,
+//  &menuItemAnimations,
 #if GAMES > 0
   &menuItemGames,
 #endif
@@ -170,6 +170,7 @@ MenuItem* mainMenuItems [] = {
 #endif
   &menuItemSettings,
 };
+
 
 int mainMenuItemCount;
 
@@ -192,12 +193,15 @@ void setup()
   pinMode(RESET_PIN, INPUT_PULLUP);
 #endif
 
+  randomSeed(17);
+
   // Setup serial interface
   Serial.begin(115200);
 
-  delay(250);
-  // Serial.println(F("starting..."));
+  delay(1000);
+  Serial.println(F("starting..."));
 
+  // wireless.begin();
   readProductID();
 
   // Initialize the IR receiver
@@ -217,18 +221,18 @@ void setup()
 
   matrix.swapBuffers();
 
-  pinMode(SD_CARD_CS, OUTPUT);
-  sdAvailable = SD.begin(SD_CARD_CS);
-  if (sdAvailable) {
-    animations.setup((char *)"/gifs/");
-    messagePlayer.setup((char *)"/messages/");
-  }
+
+//  pinMode(SD_CARD_CS, OUTPUT);
+  sdAvailable = false; //SD.begin(SD_CARD_CS);
+//  if (sdAvailable) {
+//    animations.setup((char *)"/gifs/");
+//    messagePlayer.setup((char *)"/messages/");
+//  }
 
   // setup the effects generator
   effects.Setup();
 
   InitAudio();
-
   mainMenuItemCount = sizeof(mainMenuItems) / sizeof(MenuItem*);
 
   // initialize realtime clock
@@ -247,12 +251,16 @@ void setup()
   // Serial.println(hasTeensyRTC);
 
   clockDisplay.readTime();
+
+//  radio.begin();
+//  radio.printDetails();
+
   
   // Serial.print(F("isTimeAvailable: "));
   // Serial.println(isTimeAvailable);
 
   // set date time callback function
-  SdFile::dateTimeCallback(dateTime);
+//  SdFile::dateTimeCallback(dateTime);
 
   // default to audio patterns
   menu.currentIndex = 0;
@@ -296,8 +304,8 @@ void setup()
   menuItemPatterns.playModeEnabled = true;
   menuItemPatterns.paletteEnabled = true;
 
-  menuItemAnimations.visible = sdAvailable && animations.imageCount > 0;
-  menuItemAnimations.playModeEnabled = true ;
+//  menuItemAnimations.visible = sdAvailable && animations.imageCount > 0;
+//  menuItemAnimations.playModeEnabled = true ;
 }
 
 void loadOverlaySettings() {
@@ -311,13 +319,13 @@ void loadOverlaySettings() {
     menu.clockVisible = true;
     menu.messageVisible = false;
   }
-  else if (messagePlayer.count > 0 && messageIndex >= 0 && messageIndex < messagePlayer.count) {
-    menu.overlayIndex = overlayIndex;
-    messagePlayer.moveTo(messageIndex - 1);
-    messagePlayer.loadNextMessage();
-    menu.messageVisible = true;
-    menu.clockVisible = false;
-  }
+//  else if (messagePlayer.count > 0 && messageIndex >= 0 && messageIndex < messagePlayer.count) {
+//    menu.overlayIndex = overlayIndex;
+//    messagePlayer.moveTo(messageIndex - 1);
+//    messagePlayer.loadNextMessage();
+//    menu.messageVisible = true;
+//    menu.clockVisible = false;
+//  }
 }
 
 void loop()
@@ -369,33 +377,33 @@ bool setPattern(int index) {
   }
   return false;
 }
-
-void listAnimations() {
-  animations.listFiles();
-}
-
-void reloadAnimations() {
-  animations.setup((char *)"/gifs/");
-}
-
-bool setAnimation(String name) {
-  if (animations.setAnimation(name)) {
-    menu.currentIndex = 2;
-    menu.visible = false;
-    return true;
-  }
-  return false;
-}
-
-bool setAnimation(int index) {
-  if (animations.setAnimation(index)) {
-    menu.currentIndex = 2;
-    menu.visible = false;
-    return true;
-  }
-
-  return false;
-}
+//
+//void listAnimations() {
+//  animations.listFiles();
+//}
+//
+//void reloadAnimations() {
+//  animations.setup((char *)"/gifs/");
+//}
+//
+//bool setAnimation(String name) {
+//  if (animations.setAnimation(name)) {
+//    menu.currentIndex = 2;
+//    menu.visible = false;
+//    return true;
+//  }
+//  return false;
+//}
+//
+//bool setAnimation(int index) {
+//  if (animations.setAnimation(index)) {
+//    menu.currentIndex = 2;
+//    menu.visible = false;
+//    return true;
+//  }
+//
+//  return false;
+//}
 
 bool setTemperature(int temperature) {
 #if WEATHER > 0
@@ -537,10 +545,10 @@ void loadSettings() {
 
 void saveSettings() {
   saveAudioScaleSetting();
-  saveBrightnessSetting();
-  saveBackgroundBrightnessSetting();
-  saveMenuColor();
-  saveAutoPlayDurationSeconds();
+//  saveBrightnessSetting();
+//  saveBackgroundBrightnessSetting();
+//  saveMenuColor();
+//  saveAutoPlayDurationSeconds();
   clockDisplay.saveSettings();
 }
 
@@ -582,7 +590,7 @@ void adjustBrightness(int delta, boolean wrap) {
 
 uint8_t cycleBrightness() {
   adjustBrightness(1, true);
-  saveBrightnessSetting();
+//  saveBrightnessSetting();
 
   if (brightness == brightnessMap[0])
     return 0;
@@ -682,193 +690,160 @@ void applyDemoMode() {
   }
 }
 
-void saveBrightnessSetting() {
-  saveByteSetting(brghtnssFilename, brightness);
-}
 
-void saveBackgroundBrightnessSetting() {
-  saveByteSetting(bckbrghtFilename, backgroundBrightness);
-}
-
-void saveMenuColor() {
-  saveMenuR();
-  saveMenuG();
-  saveMenuB();
-}
-
-void saveMenuR() {
-  saveByteSetting(menuRFilename, menuColor.red);
-}
-
-void saveMenuG() {
-  saveByteSetting(menuGFilename, menuColor.green);
-}
-
-void saveMenuB() {
-  saveByteSetting(menuBFilename, menuColor.blue);
-}
-
-void saveAutoPlayDurationSeconds() {
-  saveIntSetting(autoplydFilename, autoPlayDurationSeconds);
-}
-
-void saveDemoMode() {
-  saveByteSetting(demoModeFilename, demoMode);
-}
-
-char* auroraPath = (char *) "/aurora/";
-
+//char* auroraPath = (char *) "/aurora/";
+//
 int loadIntSetting(const char* name, uint8_t maxLength, int defaultValue) {
-  if (!sdAvailable)
-    return defaultValue;
-
-  int intValue = defaultValue;
-
-  if (!SD.exists(auroraPath)) {
-    SD.mkdir(auroraPath);
-  }
-
-  char filepath[20];
-  strcpy(filepath, auroraPath);
-  strcat(filepath, name);
-
-  //    Serial.print("loading ");
-  //    Serial.println(filepath);
-
-  File file = SD.open(filepath, FILE_READ);
-  if (file) {
-    String value;
-    char c = file.read();
-    int length = 1;
-    while (c >= 0 && length <= maxLength) {
-      value.append(c);
-      c = file.read();
-      length++;
-    }
-    file.close();
-    intValue = value.toInt();
-  }
-
-  return intValue;
+//  if (!sdAvailable)
+//    return defaultValue;
+//
+//  int intValue = defaultValue;
+//
+//  if (!SD.exists(auroraPath)) {
+//    SD.mkdir(auroraPath);
+//  }
+//
+//  char filepath[20];
+//  strcpy(filepath, auroraPath);
+//  strcat(filepath, name);
+//
+//  //    Serial.print("loading ");
+//  //    Serial.println(filepath);
+//
+//  File file = SD.open(filepath, FILE_READ);
+//  if (file) {
+//    String value;
+//    char c = file.read();
+//    int length = 1;
+//    while (c >= 0 && length <= maxLength) {
+//      value.append(c);
+//      c = file.read();
+//      length++;
+//    }
+//    file.close();
+//    intValue = value.toInt();
+//  }
+//
+//  return intValue;
 }
-
+//
 int loadByteSetting(const char* name, byte defaultValue) {
-  if (!sdAvailable)
-    return defaultValue;
-
-  uint8_t maxLength = 3;
-
-  byte byteValue = defaultValue;
-
-  if (!SD.exists(auroraPath)) {
-    SD.mkdir(auroraPath);
-  }
-
-  char filepath[20];
-  strcpy(filepath, auroraPath);
-  strcat(filepath, name);
-
-  File file = SD.open(filepath, FILE_READ);
-  if (file) {
-    String value;
-    char c = file.read();
-    int length = 1;
-    while (c >= 0 && length <= maxLength) {
-      value.append(c);
-      c = file.read();
-      length++;
-    }
-    file.close();
-    byteValue = (byte) value.toInt();
-  }
-
-  return byteValue;
+//  if (!sdAvailable)
+//    return defaultValue;
+//
+//  uint8_t maxLength = 3;
+//
+//  byte byteValue = defaultValue;
+//
+//  if (!SD.exists(auroraPath)) {
+//    SD.mkdir(auroraPath);
+//  }
+//
+//  char filepath[20];
+//  strcpy(filepath, auroraPath);
+//  strcat(filepath, name);
+//
+//  File file = SD.open(filepath, FILE_READ);
+//  if (file) {
+//    String value;
+//    char c = file.read();
+//    int length = 1;
+//    while (c >= 0 && length <= maxLength) {
+//      value.append(c);
+//      c = file.read();
+//      length++;
+//    }
+//    file.close();
+//    byteValue = (byte) value.toInt();
+//  }
+//
+//  return byteValue;
 }
-
+//
 tmElements_t loadDateTimeSetting(const char* name) {
-  tmElements_t value;
-
-  if (!sdAvailable)
-    return value;
-
-  if (!SD.exists(auroraPath)) {
-    SD.mkdir(auroraPath);
-  }
-
-  char filepath[20];
-  strcpy(filepath, auroraPath);
-  strcat(filepath, name);
-
-  File file = SD.open(filepath, FILE_READ);
-  if (file) {
-    char c;
-    value.Year = CalendarYrToTm(readInt(file, 4));
-    if (c >= 0) value.Month = readInt(file, 2);
-    if (c >= 0) value.Day = readInt(file, 2);
-    if (c >= 0) value.Hour = readInt(file, 2);
-    if (c >= 0) value.Minute = readInt(file, 2);
-    if (c >= 0) value.Second = readInt(file, 2);
-
-    file.close();
-  }
-
-  return value;
+//  tmElements_t value;
+//
+//  if (!sdAvailable)
+//    return value;
+//
+//  if (!SD.exists(auroraPath)) {
+//    SD.mkdir(auroraPath);
+//  }
+//
+//  char filepath[20];
+//  strcpy(filepath, auroraPath);
+//  strcat(filepath, name);
+//
+//  File file = SD.open(filepath, FILE_READ);
+//  if (file) {
+//    char c;
+//    value.Year = CalendarYrToTm(readInt(file, 4));
+//    if (c >= 0) value.Month = readInt(file, 2);
+//    if (c >= 0) value.Day = readInt(file, 2);
+//    if (c >= 0) value.Hour = readInt(file, 2);
+//    if (c >= 0) value.Minute = readInt(file, 2);
+//    if (c >= 0) value.Second = readInt(file, 2);
+//
+//    file.close();
+//  }
+//
+//  return value;
 }
 
-int readInt(File &file, uint8_t maxLength) {
-  String text;
-  char c = file.read();
-  int length = 1;
-  while (c >= 0 && length <= maxLength) {
-    text.append(c);
-    c = file.read();
-    length++;
-  }
-  return text.toInt();
-}
-
+//int readInt(File &file, uint8_t maxLength) {
+//  String text;
+//  char c = file.read();
+//  int length = 1;
+//  while (c >= 0 && length <= maxLength) {
+//    text.append(c);
+//    c = file.read();
+//    length++;
+//  }
+//  return text.toInt();
+//}
+//
 void saveIntSetting(const char* name, int value) {
-  if (!sdAvailable)
-    return;
-
-  if (!SD.exists(auroraPath)) {
-    SD.mkdir(auroraPath);
-  }
-
-  char filepath[20];
-  strcpy(filepath, auroraPath);
-  strcat(filepath, name);
-
-  // Serial.print("saving ");
-  // Serial.println(filepath);
-
-  File file = SD.open(filepath, O_CREAT | O_TRUNC | O_WRITE);
-  if (file) {
-    file.print(value, 10);
-    file.close();
-  }
+//  if (!sdAvailable)
+//    return;
+//
+//  if (!SD.exists(auroraPath)) {
+//    SD.mkdir(auroraPath);
+//  }
+//
+//  char filepath[20];
+//  strcpy(filepath, auroraPath);
+//  strcat(filepath, name);
+//
+//  // Serial.print("saving ");
+//  // Serial.println(filepath);
+//
+//  File file = SD.open(filepath, O_CREAT | O_TRUNC | O_WRITE);
+//  if (file) {
+//    file.print(value, 10);
+//    file.close();
+//  }
 }
-
+//
 void saveByteSetting(const char* name, byte value) {
-  if (!sdAvailable)
-    return;
-
-  if (!SD.exists(auroraPath)) {
-    SD.mkdir(auroraPath);
-  }
-
-  char filepath[20];
-  strcpy(filepath, auroraPath);
-  strcat(filepath, name);
-
-  // Serial.print("saving ");
-  // Serial.println(filepath);
-
-  File file = SD.open(filepath, O_CREAT | O_TRUNC | O_WRITE);
-  if (file) {
-    file.print(value, 10);
-    file.close();
-  }
+//  if (!sdAvailable)
+//    return;
+//
+//  if (!SD.exists(auroraPath)) {
+//    SD.mkdir(auroraPath);
+//  }
+//
+//  char filepath[20];
+//  strcpy(filepath, auroraPath);
+//  strcat(filepath, name);
+//
+//  // Serial.print("saving ");
+//  // Serial.println(filepath);
+//
+//  File file = SD.open(filepath, O_CREAT | O_TRUNC | O_WRITE);
+//  if (file) {
+//    file.print(value, 10);
+//    file.close();
+//  }
 }
 
 void toggleSettingsMenuVisibility() {
@@ -912,15 +887,15 @@ uint16_t XY(uint8_t x, uint8_t y) {
 
   return (hwy * MATRIX_WIDTH) + hwx;
 }
-
-// call back for file timestamps
-void dateTime(uint16_t* date, uint16_t* time2) {
-  // return date using FAT_DATE macro to format fields
-  *date = FAT_DATE(tmYearToCalendar(time.Year), time.Month, time.Day);
-
-  // return time using FAT_TIME macro to format fields
-  *time2 = FAT_TIME(time.Hour, time.Minute, time.Second);
-}
+//
+//// call back for file timestamps
+//void dateTime(uint16_t* date, uint16_t* time2) {
+//  // return date using FAT_DATE macro to format fields
+//  *date = FAT_DATE(tmYearToCalendar(time.Year), time.Month, time.Day);
+//
+//  // return time using FAT_TIME macro to format fields
+//  *time2 = FAT_TIME(time.Hour, time.Minute, time.Second);
+//}
 
 void updateStatusLed() {
 #ifdef STATUS_LED

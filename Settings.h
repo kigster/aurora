@@ -89,38 +89,38 @@ class Settings : public Runnable {
       &menuItemExit,
     };
 
-    File imageFile;
+//    File imageFile;
 
     void openImageFile() {
       if (!sdAvailable)
         return;
-
-      if (imageFile)
-        imageFile.close();
-
-      char filepath [] = "/aurora/gearblue.gif"; // gearblu2.gif
-
-      if (!SD.exists(filepath))
-        return;
-
-      imageFile = SD.open(filepath, FILE_READ);
-      if (!imageFile)
-        return;
-
-      if (imageFile.isDirectory()) {
-        imageFile.close();
-        return;
-      }
-
-      gifPlayer.setFile(imageFile);
-
-      if (!gifPlayer.parseGifHeader()) {
-        imageFile.close();
-        return;
-      }
-
-      gifPlayer.parseLogicalScreenDescriptor();
-      gifPlayer.parseGlobalColorTable();
+//
+//      if (imageFile)
+//        imageFile.close();
+//
+//      char filepath [] = "/aurora/gearblue.gif"; // gearblu2.gif
+//
+//      if (!SD.exists(filepath))
+//        return;
+//
+//      imageFile = SD.open(filepath, FILE_READ);
+//      if (!imageFile)
+//        return;
+//
+//      if (imageFile.isDirectory()) {
+//        imageFile.close();
+//        return;
+//      }
+//
+//      gifPlayer.setFile(imageFile);
+//
+//      if (!gifPlayer.parseGifHeader()) {
+//        imageFile.close();
+//        return;
+//      }
+//
+//      gifPlayer.parseLogicalScreenDescriptor();
+//      gifPlayer.parseGlobalColorTable();
     }
 
   public:
@@ -149,14 +149,14 @@ class Settings : public Runnable {
 
     unsigned int drawFrame() {
       unsigned long result = 30;
-
-      if (imageFile && imageFile.available()) {
-        unsigned long result = gifPlayer.drawFrame();
-        if (result == ERROR_FINISHED) {
-          openImageFile();
-        }
-      }
-
+//
+//      if (imageFile && imageFile.available()) {
+//        unsigned long result = gifPlayer.drawFrame();
+//        if (result == ERROR_FINISHED) {
+//          openImageFile();
+//        }
+//      }
+//
       // matrix.setFont(font3x5);
       // matrix.drawString(0, 27, { 255, 255, 255 }, "v1.5");
 
@@ -173,8 +173,8 @@ class Settings : public Runnable {
     }
 
     void stop() {
-      if (imageFile)
-        imageFile.close();
+//      if (imageFile)
+//        imageFile.close();
     }
 };
 

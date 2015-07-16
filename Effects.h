@@ -245,6 +245,8 @@ public:
         currentPaletteName = (char *)"Random";
         break;
     }
+    Serial.print("Pallete Changed to: ");
+    Serial.println(currentPaletteName);
   }
 
   void setPalette(String paletteName) {

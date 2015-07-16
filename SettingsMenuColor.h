@@ -183,7 +183,7 @@ class SettingsMenuColor : public Runnable {
 
     void save(CRGB crgb) {
       menuColor = crgb;
-      saveMenuColor();
+//      saveMenuColor();
     }
 };
 

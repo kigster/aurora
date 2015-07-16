@@ -93,7 +93,7 @@ class SettingsBackgroundBrightness : public Runnable {
           case InputCommand::Select:
           case InputCommand::Back:
             if (hasChanges) {
-              saveBackgroundBrightnessSetting();
+//              saveBackgroundBrightnessSetting();
               hasChanges = false;
             }
             return;

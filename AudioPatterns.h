@@ -44,104 +44,93 @@ class AudioPatterns : public Playlist {
 
     AudioPatternFunctionPointer currentItem;
 
-    static const int PATTERN_COUNT = 31;
+    static const int PATTERN_COUNT = 20;
 
     AudioPatternFunctionPointer items[PATTERN_COUNT] = {
 
-      &AudioPatterns::gauge,                                            // yes
-      &AudioPatterns::gauge2,                                           // yes
-      &AudioPatterns::paletteSmear,                                     // very bright but pretty
-      &AudioPatterns::incrementalDrift,                                 // YES
-      &AudioPatterns::incrementalDrift2,                                // YES
-      &AudioPatterns::analyzerPixelsWithNoiseSmearing,                  // YES
-      &AudioPatterns::analyzerColumnsWithNoiseSmearing,                 // YES
-      &AudioPatterns::lineChartWithNoiseSmearing,                       // GRP1
-      &AudioPatterns::analyzerPixelsWithOneLargeSpiral,                 // GRP1
-      &AudioPatterns::analyzerPixelsWithFiveSpirals,                    // GRP1
-      &AudioPatterns::analyzerPixelsWithStreamDown120,                  // GRP1
-      &AudioPatterns::analyzerPixelsWithStreamUpAndLeft120,             // GRP1
-      &AudioPatterns::analyzerPixelsWithStreamUp120,                    // GRP1
-      &AudioPatterns::analyzerPixelsWithStreamUpAndRight120,            // GRP1
-      &AudioPatterns::analyzerPixelsMirroredVerticallyWithFiveSpirals,  // GRP1
-      &AudioPatterns::fallingSpectrogramPaletteSpectrum,                // GRP2
-      &AudioPatterns::fallingWavySpectrogram,                           // GRP2
-      &AudioPatterns::fallingSpectrogram,                               // GRP2
-      &AudioPatterns::fallingSpectrogramPaletteSpectrum,                // GRP2
-      &AudioPatterns::fallingWavySpectrogram,                           // GRP2
-      &AudioPatterns::fallingSpectrogram,                               // GRP2
-      &AudioPatterns::linesFromCenterToOutside,                         // Y
-      &AudioPatterns::analyzerPixelsX4,                                 // Y
-      &AudioPatterns::circles,                                          // GRP3
-      &AudioPatterns::circles,                                          // GRP3
-      &AudioPatterns::boxes,                                            // GRP3
-      &AudioPatterns::boxes,                                            // GRP3
-      &AudioPatterns::spiralSpectrum,                                   // GRP4
-      &AudioPatterns::spiralSpectrum2,                                   // GRP4
-      &AudioPatterns::spiralSpectrum2,                                   // GRP4
-      &AudioPatterns::spiralSpectrum2                                   // GRP4
+    &AudioPatterns::gauge2,                           // [x] even more awesome rotating gages
+    &AudioPatterns::paletteSmear,                     // [x] really bright show of colors
+    &AudioPatterns::bounce,                           // [x] bouncing dots.. kinda nice to look at
+    &AudioPatterns::incrementalDrift,                 // [x] dots in a pattern going around the circle
+    &AudioPatterns::incrementalDrift2,                // [x] same concept, another configuration
+    &AudioPatterns::pendulumWave,                     // [x] sine way, gotta keep for a while for it to be awesome
+    &AudioPatterns::fire,                             // [x] fire
+    &AudioPatterns::analyzerPixelsWithNoiseSmearing,  // [x] fantastic trippy analyzer
+    &AudioPatterns::analyzerColumnsWithNoiseSmearing, // [x] similar, but brighter more color
+    &AudioPatterns::lineChartWithNoiseSmearing,       // [x] trippy analyzer
+    &AudioPatterns::analyzerPixelsWithOneLargeSpiral, // [x] similar but more pixelated
+    &AudioPatterns::analyzerPixelsMirroredVerticallyWithFiveSpirals, // [x] first cool one
+    &AudioPatterns::fallingWavySpectrogram,
+    &AudioPatterns::fallingSpectrogram,                       // [x] very bright awesome colors, streaming down river
+    &AudioPatterns::linesFromCenterToOutside,         // [x] cool segments of a circle coming out center
+    &AudioPatterns::analyzerPixelsX4,                 // [x] one of the coolest patterns, dancing lines
+    &AudioPatterns::areaChart,                        // [x] somewhat cool analyzer screen, streaming down
+    &AudioPatterns::circles,                          // [x] bright as fuck circles
+    &AudioPatterns::boxes,                            // [x] as above, but squares
+    &AudioPatterns::spiralSpectrum2,                  // [x] not as boring spectometer :)
 };
+      AudioPatternFunctionPointer shuffledItems[PATTERN_COUNT];
 
 //      static const int PATTERN_COUNT = 39;
-//      AudioPatternFunctionPointer shuffledItems[PATTERN_COUNT];
 //
 //      AudioPatternFunctionPointer items[PATTERN_COUNT] = {
-//          &AudioPatterns::analyzerColumns,
-//          &AudioPatterns::analyzerPixels,
-//          &AudioPatterns::lineChart,
-//          &AudioPatterns::radar,
-//          &AudioPatterns::gauge,
-//          &AudioPatterns::gauge2,
-//          &AudioPatterns::paletteSmear,
-//          &AudioPatterns::bounce,
-//          &AudioPatterns::incrementalDrift,
-//          &AudioPatterns::incrementalDrift2,
-//          &AudioPatterns::pendulumWave,
-//          &AudioPatterns::fire,
-//          &AudioPatterns::analyzerPixelsWithNoiseSmearing,
-//          &AudioPatterns::analyzerColumnsWithNoiseSmearing,
-//          &AudioPatterns::randomEmittersWithNoiseSmearing,
-//          &AudioPatterns::lineChartWithNoiseSmearing,
-//          &AudioPatterns::analyzerPixelsWithOneLargeSpiral,
-//          &AudioPatterns::analyzerPixelsWithFiveSpirals,
-//          &AudioPatterns::analyzerPixelsWithStreamDown120,
-//          &AudioPatterns::analyzerPixelsWithStreamUpAndLeft120,
-//          &AudioPatterns::analyzerPixelsWithStreamUp120,
-//          &AudioPatterns::analyzerPixelsWithStreamUpAndRight120,
-//          &AudioPatterns::analyzerPixelsMirroredVerticallyWithFiveSpirals,
-//          &AudioPatterns::analyzerColumnsWithOneLargeSpiralStream,
-//          &AudioPatterns::analyzerColumnsWithVerticalStream170,
-//          &AudioPatterns::fallingSpectrogramPaletteSpectrum,
+//          &AudioPatterns::analyzerColumns,                  // [ ] basic analyzer matrix, boxy and not interesting
+//          &AudioPatterns::analyzerPixels,                   // [ ] just the tops of the analyzer
+//          &AudioPatterns::lineChart,                        // [ ] line of the tops
+//          &AudioPatterns::radar,                            // [ ] just going around analyzer
+//          &AudioPatterns::gauge,                            // [ ] awesome rotating gages
+//          &AudioPatterns::gauge2,                           // [x] even more awesome rotating gages
+//          &AudioPatterns::paletteSmear,                     // [x] really bright show of colors
+//          &AudioPatterns::bounce,                           // [x] bouncing dots.. kinda nice to look at
+//          &AudioPatterns::incrementalDrift,                 // [x] dots in a pattern going around the circle
+//          &AudioPatterns::incrementalDrift2,                // [x] same concept, another configuration
+//          &AudioPatterns::pendulumWave,                     // [x] sine way, gotta keep for a while for it to be awesome
+//          &AudioPatterns::fire,                             // [x] fire
+//          &AudioPatterns::analyzerPixelsWithNoiseSmearing,  // [x] fantastic trippy analyzer
+//          &AudioPatterns::analyzerColumnsWithNoiseSmearing, // [x] similar, but brighter more color
+//          &AudioPatterns::randomEmittersWithNoiseSmearing,  // [ ] barely can see this one
+//          &AudioPatterns::lineChartWithNoiseSmearing,       // [x] trippy analyzer
+//          &AudioPatterns::analyzerPixelsWithOneLargeSpiral, // [x] similar but more pixelated
+//          &AudioPatterns::analyzerPixelsWithFiveSpirals,    // [ ] same as above
+//          &AudioPatterns::analyzerPixelsWithStreamDown120,  // [ ] same as above
+//          &AudioPatterns::analyzerPixelsWithStreamUpAndLeft120,     // [ ] same as above but with some trippy wind
+//          &AudioPatterns::analyzerPixelsWithStreamUp120,            // [ ] same as above
+//          &AudioPatterns::analyzerPixelsWithStreamUpAndRight120,    // [ ] same as above
+//          &AudioPatterns::analyzerPixelsMirroredVerticallyWithFiveSpirals, // [x] first cool one
+//          &AudioPatterns::analyzerColumnsWithOneLargeSpiralStream,  // [ ] basically EQ with bars
+//          &AudioPatterns::analyzerColumnsWithVerticalStream170,     // [ ] streaming down colors, neat
+//          &AudioPatterns::fallingSpectrogramPaletteSpectrum,        // [ ] same as above
 //          &AudioPatterns::fallingWavySpectrogram,
-//          &AudioPatterns::fallingSpectrogram,
-//          &AudioPatterns::randomEmitters,
-//          &AudioPatterns::linesFromCenterToOutside,
-//          &AudioPatterns::analyzerPixelsX4,
-//          &AudioPatterns::areaChart,
-//          &AudioPatterns::lineChartWithHorizontalStream,
-//          &AudioPatterns::lineChartWithSpiral,
-//          &AudioPatterns::lineChartWithSpirals,
-//          &AudioPatterns::circles,
-//          &AudioPatterns::boxes,
-//          &AudioPatterns::spiralSpectrum,
-//          &AudioPatterns::spiralSpectrum2,
-
-      //      &AudioPatterns::viz2,
-      //      &AudioPatterns::viz10,
-      //      &AudioPatterns::radialPixels,
-      //      &AudioPatterns::radialCircles,
-      //      &AudioPatterns::staticMiddlePixelsWithNoiseSmearing,
-      //      &AudioPatterns::FunkyNoise1,
-      //      &AudioPatterns::FunkyNoise2,
-      //      &AudioPatterns::FunkyNoise3,
-      //      &AudioPatterns::FunkyNoise4,
-      //      &AudioPatterns::FunkyNoise5,
-      //      &AudioPatterns::linesFromOutsideToCenter,
+//          &AudioPatterns::fallingSpectrogram,                       // [x] very bright awesome colors, streaming down river
+//          &AudioPatterns::randomEmitters,                   // [ ] bee hive of fast moving particles. Not bright
+//          &AudioPatterns::linesFromCenterToOutside,         // [x] cool segments of a circle coming out center
+//          &AudioPatterns::analyzerPixelsX4,                 // [x] one of the coolest patterns, dancing lines
+//          &AudioPatterns::areaChart,                        // [x] somewhat cool analyzer screen, streaming down
+//          &AudioPatterns::lineChartWithHorizontalStream,    // [ ] same as above, but line
+//          &AudioPatterns::lineChartWithSpiral,              // [ ] same as above
+//          &AudioPatterns::lineChartWithSpirals,             // [ ] same as above
+//          &AudioPatterns::circles,                          // [x] bright as fuck circles
+//          &AudioPatterns::boxes,                            // [x] as above, but squares
+//          &AudioPatterns::spiralSpectrum,                   // [ ] kinda boring spectrometer
+//          &AudioPatterns::spiralSpectrum2,                  // [x] not as boring spectometer :)
+//
+//      //      &AudioPatterns::viz2,
+//      //      &AudioPatterns::viz10,
+//      //      &AudioPatterns::radialPixels,
+//      //      &AudioPatterns::radialCircles,
+//      //      &AudioPatterns::staticMiddlePixelsWithNoiseSmearing,
+//      //      &AudioPatterns::FunkyNoise1,
+//      //      &AudioPatterns::FunkyNoise2,
+//      //      &AudioPatterns::FunkyNoise3,
+//      //      &AudioPatterns::FunkyNoise4,
+//      //      &AudioPatterns::FunkyNoise5,
+//      //      &AudioPatterns::linesFromOutsideToCenter,
 //    };
-
-    AudioPatternFunctionPointer shuffledItems[PATTERN_COUNT];
+//
+//    AudioPatternFunctionPointer shuffledItems[PATTERN_COUNT];
 
     void circles() {
-      effects.SpiralStream(15, 15, 16, 120);
+      effects.SpiralStream(15, 15, 16, 80);
 
       for (int i = 0; i < bandCount; i++) {
         int level = levels[i];
@@ -158,11 +147,11 @@ class AudioPatterns : public Playlist {
     }
 
     void boxes() {
-      effects.SpiralStream(7, 7, 8, 120);
-      effects.SpiralStream(7, 23, 8, 120);
-      effects.SpiralStream(15, 15, 8, 120);
-      effects.SpiralStream(23, 7, 8, 120);
-      effects.SpiralStream(23, 23, 8, 120);
+      effects.SpiralStream(7, 7, 8, 80);
+      effects.SpiralStream(7, 23, 8, 80);
+      effects.SpiralStream(15, 15, 8, 80);
+      effects.SpiralStream(23, 7, 8, 80);
+      effects.SpiralStream(23, 23, 8, 80);
 
       for (int i = 0; i < bandCount; i++) {
         int level = levels[i];
@@ -416,7 +405,7 @@ class AudioPatterns : public Playlist {
 
         CRGB color;
         if (effects.paletteIndex < 2) // invert the first two palettes
-          color = effects.ColorFromCurrentPalette(205 - (level / 4 - 205));
+          color = effects.ColorFromCurrentPalette(140 - (level / 4 - 140));
         else
           color = effects.ColorFromCurrentPalette(level / 4);
 
@@ -1339,6 +1328,14 @@ class AudioPatterns : public Playlist {
         shuffledItems[a] = shuffledItems[r];
         shuffledItems[r] = temp;
       }
+    }
+
+    int itemsRealIndex() {
+        for (int i = 0; i < PATTERN_COUNT; i++) {
+            if (currentItem == items[i])
+                return i;
+        }
+
     }
 
     char* Drawable::name = (char *)"Audio Sensitive";

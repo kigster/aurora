@@ -28,7 +28,27 @@
 #ifndef IrCodes_H
 #define IrCodes_H
 
+#include "IrCodes.h"
 #include "Externs.h"
+//UP:           Up;
+//DOWN:         Down;
+//LEFT:         Left;
+//RIGHT:        Right;
+//ENTER_SAVE:   Select;
+//STOP_MODE:  1:PlayMode;
+//2:            Palette;
+//3:            CycleClockAndMessageFiles;
+//PLAY_PAUSE:   Power;
+//BACK:         Back;
+//VOLUME_UP:    BrightnessUp;
+//VOLUME_DOWN:  BrightnessDown;
+//SETUP:        Menu;
+//5:            ToggleSettingsMenuVisibility;
+//6:            AudioScaleUp;
+//7:            FreezeDisplay;
+//9:            AudioScaleDown;
+//0_10_PLUS:    ShowPatternName;
+//
 
 enum class InputCommand {
   None,
@@ -443,51 +463,6 @@ InputCommand getCommand(String input) {
   return InputCommand::None;
 }
 
-void createFile(aJsonObject * root) {
-  char path[20];
-  uint32_t length = 0;
-
-  aJsonObject* property = aJson.getObjectItem(root, "length");
-  if (property->type == aJson_Int) {
-    length = property->valueint;
-    Serial.print(F("length: "));
-    Serial.println(length);
-  }
-
-  property = aJson.getObjectItem(root, "path");
-  if (property->type == aJson_String) {
-    strcpy(path, property->valuestring);
-    Serial.print(F("path: "));
-    Serial.println(path);
-  }
-
-  if (length < 1) return;
-
-  if (SD.exists(path) && !SD.remove(path)) {
-    return;
-  }
-
-  File file = SD.open(path, FILE_WRITE);
-  if (!file) return;
-
-  uint32_t bytesWritten = 0;
-
-  while (bytesWritten < length) {
-    if (Serial.available() > 0) {
-      int b = Serial.read();
-      if (b >= 0) {
-        file.write((byte) b);
-        bytesWritten++;
-      }
-    }
-  }
-  file.close();
-
-  reloadAnimations();
-  String name = property->valuestring;
-  name = name.substring(6);
-  setAnimation(name);
-}
 
 InputCommand readSerialCommand() {
   if (Serial.available() < 1)
@@ -509,18 +484,18 @@ InputCommand readSerialCommand() {
   InputCommand command = InputCommand::None;
 
   // message
-  aJsonObject* item = aJson.getObjectItem(root, "message");
-  if (item && messagePlayer.readJsonObject(item)) {
-    command = InputCommand::ShowCurrentMessage;
-  }
+//  aJsonObject* item = aJson.getObjectItem(root, "message");
+//  if (item && messagePlayer.readJsonObject(item)) {
+//    command = InputCommand::ShowCurrentMessage;
+//  }
 
   // brightness
-  item = aJson.getObjectItem(root, "brightness");
+  aJsonObject* item = aJson.getObjectItem(root, "brightness");
   if (item && item->type == aJson_Int) {
     brightness = item->valueint;
     boundBrightness();
     matrix.setBrightness(brightness);
-    saveBrightnessSetting();
+//    saveBrightnessSetting();
     command = InputCommand::None;
   }
 
@@ -530,7 +505,7 @@ InputCommand readSerialCommand() {
     backgroundBrightness = item->valueint;
     boundBackgroundBrightness();
     matrix.setBackgroundBrightness(backgroundBrightness);
-    saveBackgroundBrightnessSetting();
+//    saveBackgroundBrightnessSetting();
     command = InputCommand::None;
   }
 
@@ -584,18 +559,18 @@ InputCommand readSerialCommand() {
   if (item && item->type == aJson_String) {
     //Serial.print(F("Loading animation "));
     //Serial.println(item->valuestring);
-    if (setAnimation(item->valuestring))
-      command = InputCommand::Update;
-    else
-      command = InputCommand::None;
+//    if (setAnimation(item->valuestring))
+//      command = InputCommand::Update;
+//    else
+//      command = InputCommand::None;
   }
   else if (item && item->type == aJson_Int) {
     //Serial.print(F("Loading animation "));
     //Serial.println(item->valueint);
-    if (setAnimation(item->valueint))
-      command = InputCommand::Update;
-    else
-      command = InputCommand::None;
+//    if (setAnimation(item->valueint))
+//      command = InputCommand::Update;
+//    else
+//      command = InputCommand::None;
   }
 
   // temperature
@@ -615,7 +590,7 @@ InputCommand readSerialCommand() {
   // createFile
   item = aJson.getObjectItem(root, "createFile");
   if (item) {
-    createFile(item);
+//    createFile(item);
     command = InputCommand::None;
   }
 
@@ -626,7 +601,7 @@ InputCommand readSerialCommand() {
   if (item && item->type == aJson_String) {
     // custom commands
     if ((String) item->valuestring == "ListAnimations") {
-      listAnimations();
+//      listAnimations();
       command = InputCommand::None;
     }
     else if ((String) item->valuestring == "ListAudioPatterns") {
