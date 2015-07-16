@@ -62,8 +62,12 @@ const uint8_t brightnessCount = 5;
 uint8_t brightnessMap[brightnessCount] = { 16, 32, 64, 128, 255 };
 uint8_t backgroundBrightnessMap[brightnessCount] = { 16, 32, 64, 128, 255 };
 
-#include "MessagePlayer.h"
-MessagePlayer messagePlayer;
+////#include "WirelessSync.h"
+//#include <RF24.h>
+//
+//RF24 radio(15,19);
+////WirelessSync wireless(radio, WIRELESS_RECEIVER);
+
 
 // settings file names
 char* brghtnssFilename = (char*) "brghtnss.txt";
