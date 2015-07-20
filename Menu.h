@@ -96,14 +96,11 @@ public:
 
                 currentMenuItem = menuItems[currentIndex];
 
-                if (currentMenuItem->drawable)
-                    currentMenuItem->drawable->start();
+                if (currentMenuItem->drawable) currentMenuItem->drawable->start();
 
-                currentPlaylist =
-                        static_cast<Playlist*>(currentMenuItem->drawable);
+                currentPlaylist = static_cast<Playlist*>(currentMenuItem->drawable);
                 isPlaylist = currentMenuItem->drawable->isPlaylist();
-                currentRunnable =
-                        static_cast<Runnable*>(currentMenuItem->drawable);
+                currentRunnable = static_cast<Runnable*>(currentMenuItem->drawable);
                 isRunnable = currentMenuItem->drawable->isRunnable();
 
                 if (playMode != Paused && autoPlayTimeout == 0) {
@@ -113,8 +110,7 @@ public:
 
             unsigned int requestedDelay = 30;
 
-            if (!freezeDisplay)
-                requestedDelay = draw();
+            if (!freezeDisplay) requestedDelay = draw();
 
             unsigned int requestedDelayTimeout = millis() + requestedDelay;
 
@@ -131,7 +127,7 @@ public:
 
                 updateForeground(menuItems, menuItemsCount);
 
-//        wireless.sync();
+//              wireless.sync();
 
                 InputCommand command = readCommand(defaultHoldDelay);
 
@@ -139,74 +135,58 @@ public:
                     currentPlaylist->stop();
                     move(menuItems, menuItemsCount, -1);
                     break;
-                } else if (command == InputCommand::Down && visible
-                        && !isHolding) {
+                } else if (command == InputCommand::Down && visible && !isHolding) {
                     currentPlaylist->stop();
                     move(menuItems, menuItemsCount, 1);
                     break;
-                } else if (command == InputCommand::Left
-                        && showingPaletteIndicator && !isHolding
-                        && currentMenuItem->paletteEnabled) {
+                } else if (command == InputCommand::Left && showingPaletteIndicator && !isHolding
+                                && currentMenuItem->paletteEnabled) {
                     effects.CyclePalette(-1);
                     paletteChanged = true;
                     showingPaletteIndicator = true;
-                    paletteIndicatorTimout = millis()
-                            + paletteIndicatorDuration;
-                } else if (command == InputCommand::Left
-                        && showingPlayModeIndicator && !isHolding
-                        && currentMenuItem->playModeEnabled) {
+                    paletteIndicatorTimout = millis() + paletteIndicatorDuration;
+                } else if (command == InputCommand::Left && showingPlayModeIndicator && !isHolding
+                                && currentMenuItem->playModeEnabled) {
                     adjustPlayMode(-1);
 
                 } else if (command == InputCommand::Left && isPlaylist) {
-                    if (playMode == Random)
-                        currentPlaylist->moveRandom(-1);
-                    else
-                        currentPlaylist->move(-1);
+                    if (playMode == Random) currentPlaylist->moveRandom(-1);
+                    else currentPlaylist->move(-1);
 
                     if (playMode != Paused) {
-                        autoPlayTimeout = millis()
-                                + (autoPlayDurationSeconds * 1000);
+                        autoPlayTimeout = millis() + (autoPlayDurationSeconds * 1000);
                     }
                     break;
-                } else if (command == InputCommand::Right
-                        && showingPaletteIndicator && !isHolding
-                        && currentMenuItem->paletteEnabled) {
+                } else if (command == InputCommand::Right && showingPaletteIndicator && !isHolding
+                                && currentMenuItem->paletteEnabled) {
                     effects.CyclePalette(1);
                     paletteChanged = true;
                     showingPaletteIndicator = true;
-                    paletteIndicatorTimout = millis()
-                            + paletteIndicatorDuration;
-                } else if (command == InputCommand::Right
-                        && showingPlayModeIndicator && !isHolding
-                        && currentMenuItem->playModeEnabled) {
+                    paletteIndicatorTimout = millis() + paletteIndicatorDuration;
+                } else if (command == InputCommand::Right && showingPlayModeIndicator && !isHolding
+                                && currentMenuItem->playModeEnabled) {
                     adjustPlayMode(1);
                 } else if (command == InputCommand::Right && isPlaylist) {
-                    if (playMode == Random)
-                        currentPlaylist->moveRandom(1);
-                    else
-                        currentPlaylist->move(1);
+                    if (playMode == Random) currentPlaylist->moveRandom(1);
+                    else currentPlaylist->move(1);
 
                     if (playMode != Paused) {
-                        autoPlayTimeout = millis()
-                                + (autoPlayDurationSeconds * 1000);
+                        autoPlayTimeout = millis() + (autoPlayDurationSeconds * 1000);
                     }
                     break;
-                } else if (command == InputCommand::Select
-                        && showingPaletteIndicator && !isHolding
-                        && currentMenuItem->paletteEnabled) {
+                } else if (command == InputCommand::Select && showingPaletteIndicator && !isHolding
+                                && currentMenuItem->paletteEnabled) {
                     showingPaletteIndicator = false;
                     updateScrollText = true;
-                } else if (command == InputCommand::Select
-                        && showingPlayModeIndicator && !isHolding
-                        && currentMenuItem->playModeEnabled) {
+                } else if (command == InputCommand::Select && showingPlayModeIndicator && !isHolding
+                                && currentMenuItem->playModeEnabled) {
                     showingPlayModeIndicator = false;
                     updateScrollText = true;
                 } else if (command == InputCommand::Select && !isHolding) {
                     if (currentMenuItem->exit) {
                         currentIndex = 0;
                         previousIndex = -1;
-                        if (currentMenuItem->drawable)
-                            currentMenuItem->drawable->stop();
+                        if (currentMenuItem->drawable) currentMenuItem->drawable->stop();
                         return;
                     } else if (isRunnable) {
                         matrix.scrollText("", 1);
@@ -221,8 +201,7 @@ public:
                         if (visible) {
                             currentIndex = 0;
                             previousIndex = -1;
-                            if (currentMenuItem->drawable)
-                                currentMenuItem->drawable->stop();
+                            if (currentMenuItem->drawable) currentMenuItem->drawable->stop();
                             return;
                         } else {
                             visible = true;
@@ -234,29 +213,24 @@ public:
                     Serial.println("Menu > Cycle Brightness");
 
                     bool wasHolding = isHolding;
-                    if (isHolding
-                            || (showingBrightnessIndicator
-                                    && cycleBrightness() == 0)) {
+                    if (isHolding || (showingBrightnessIndicator && cycleBrightness() == 0)) {
                         heldButtonHasBeenHandled();
                         powerOff();
                         previousIndex = -1;
-                        if (currentMenuItem->drawable)
-                            currentMenuItem->drawable->stop();
+                        if (currentMenuItem->drawable) currentMenuItem->drawable->stop();
                     }
 
                     if (!wasHolding) {
                         brightnessChanged = true;
                         showingBrightnessIndicator = true;
-                        brightnessIndicatorTimout = millis()
-                                + brightnessIndicatorDuration;
+                        brightnessIndicatorTimout = millis() + brightnessIndicatorDuration;
                     }
                 } else if (command == InputCommand::Power) {
                     Serial.println("Menu > Power Off");
 
                     powerOff();
                     previousIndex = -1;
-                    if (currentMenuItem->drawable)
-                        currentMenuItem->drawable->stop();
+                    if (currentMenuItem->drawable) currentMenuItem->drawable->stop();
                 } else if (command == InputCommand::BrightnessUp) {
                     Serial.println("Menu > Brightness Up");
 
@@ -264,30 +238,22 @@ public:
 //          saveBrightnessSetting();
                     brightnessChanged = true;
                     showingBrightnessIndicator = true;
-                    brightnessIndicatorTimout = millis()
-                            + brightnessIndicatorDuration;
+                    brightnessIndicatorTimout = millis() + brightnessIndicatorDuration;
                 } else if (command == InputCommand::BrightnessDown) {
                     Serial.println("Menu > Brightness Down");
                     adjustBrightness(-1, false);
 //          saveBrightnessSetting();
                     brightnessChanged = true;
                     showingBrightnessIndicator = true;
-                    brightnessIndicatorTimout = millis()
-                            + brightnessIndicatorDuration;
-                } else if (command == InputCommand::PlayMode && !isHolding
-                        && currentMenuItem->playModeEnabled) { // cycle play mode (pause/play/random)
-                    if (showingPlayModeIndicator)
-                        adjustPlayMode(1);
-                    else
-                        adjustPlayMode(0);
-                } else if (command == InputCommand::Palette && !isHolding
-                        && currentMenuItem->paletteEnabled) { // cycle color pallete
-                    if (showingPaletteIndicator)
-                        effects.CyclePalette();
+                    brightnessIndicatorTimout = millis() + brightnessIndicatorDuration;
+                } else if (command == InputCommand::PlayMode && !isHolding && currentMenuItem->playModeEnabled) { // cycle play mode (pause/play/random)
+                    if (showingPlayModeIndicator) adjustPlayMode(1);
+                    else adjustPlayMode(0);
+                } else if (command == InputCommand::Palette && !isHolding && currentMenuItem->paletteEnabled) { // cycle color pallete
+                    if (showingPaletteIndicator) effects.CyclePalette();
                     paletteChanged = true;
                     showingPaletteIndicator = true;
-                    paletteIndicatorTimout = millis()
-                            + paletteIndicatorDuration;
+                    paletteIndicatorTimout = millis() + paletteIndicatorDuration;
                 } else if (command == InputCommand::ShowClock) {
                     messageVisible = false;
                     clockVisible = true;
@@ -300,17 +266,14 @@ public:
                     messageVisible = true;
                     clockVisible = false;
                     updateScrollText = true;
-                } else if (command == InputCommand::CycleClockAndMessageFiles
-                        && !visible) { // cycle through clock faces and messages
+                } else if (command == InputCommand::CycleClockAndMessageFiles && !visible) { // cycle through clock faces and messages
                     if (isHolding || (!clockVisible && !messageVisible)) {
-                        if (isHolding)
-                            heldButtonHasBeenHandled();
+                        if (isHolding) heldButtonHasBeenHandled();
 
                         if (!clockVisible && !messageVisible) {
                             // if neither are visible, just show the current overlay
                             clockDisplay.readTime();
-                            clockVisible = isTimeAvailable
-                                    && overlayIndex < clockDisplay.itemCount;
+                            clockVisible = isTimeAvailable && overlayIndex < clockDisplay.itemCount;
                             messageVisible = !clockVisible;
 //              if (messageVisible && messagePlayer.currentIndex < 0)
 //                messageVisible = messagePlayer.loadNextMessage();
@@ -324,8 +287,7 @@ public:
                         overlayIndex++;
 
                         // if we still have clock faces left, move to the next one
-                        if (isTimeAvailable
-                                && overlayIndex < clockDisplay.itemCount) {
+                        if (isTimeAvailable && overlayIndex < clockDisplay.itemCount) {
                             clockDisplay.moveTo(overlayIndex);
                             clockVisible = true;
                             messageVisible = false;
@@ -355,60 +317,49 @@ public:
                 } else if (command == InputCommand::Update) {
                     updateScrollText = true;
                     break;
-                } else if ((command == InputCommand::AudioScaleUp
-                        || (command == InputCommand::Up && !visible))
-                        && currentMenuItem->audioScaleEnabled) {
+                } else if ((command == InputCommand::AudioScaleUp || (command == InputCommand::Up && !visible))
+                                && currentMenuItem->audioScaleEnabled) {
                     adjustAudioScale(1);
                     audioScaleChanged = true;
                     showingAudioScaleIndicator = true;
-                    audioScaleIndicatorTimout = millis()
-                            + audioScaleIndicatorDuration;
-                } else if ((command == InputCommand::AudioScaleDown
-                        || (command == InputCommand::Down && !visible))
-                        && currentMenuItem->audioScaleEnabled) {
+                    audioScaleIndicatorTimout = millis() + audioScaleIndicatorDuration;
+                } else if ((command == InputCommand::AudioScaleDown || (command == InputCommand::Down && !visible))
+                                && currentMenuItem->audioScaleEnabled) {
                     adjustAudioScale(-1);
                     audioScaleChanged = true;
                     showingAudioScaleIndicator = true;
-                    audioScaleIndicatorTimout = millis()
-                            + audioScaleIndicatorDuration;
-                } else if (command
-                        == InputCommand::ToggleSettingsMenuVisibility) {
+                    audioScaleIndicatorTimout = millis() + audioScaleIndicatorDuration;
+                } else if (command == InputCommand::ToggleSettingsMenuVisibility) {
                     toggleSettingsMenuVisibility();
                 } else if (command == InputCommand::ShowPatternName) {
                     Serial.println("Menu > Show Pattern Name");
 
                     showingPatternIndicator = true;
                     updateScrollText = true;
-                    patternIndicatorTimout = millis()
-                            + patternIndicatorDuration;
+                    patternIndicatorTimout = millis() + patternIndicatorDuration;
                 } else if (command == InputCommand::FreezeDisplay) {
                     freezeDisplay = !freezeDisplay;
-                    if (freezeDisplay)
-                        matrix.setScrollSpeed(0);
+                    if (freezeDisplay) matrix.setScrollSpeed(0);
 //          else if (messageVisible)
 //            matrix.setScrollSpeed(messagePlayer.scrollSpeed);
-                    else
-                        matrix.setScrollSpeed(scrollSpeed);
+                    else matrix.setScrollSpeed(scrollSpeed);
                 } else {
                     if (playMode != Paused && millis() >= autoPlayTimeout) {
-                        if (isPlaylist
-                                && currentPlaylist->isCurrentItemFinished) {
-                            if (playMode == Autoplay)
-                                currentPlaylist->move(1);
-                            else
-                                currentPlaylist->moveRandom(1);
+                        if (isPlaylist && currentPlaylist->isCurrentItemFinished) {
+                            if (playMode == Autoplay) currentPlaylist->move(1);
+                            else currentPlaylist->moveRandom(1);
 
-                            int duration = (autoPlayDurationSeconds * (random(2) + 1) * 1000);
+                            int duration = autoPlayDurationSeconds * 1000;
                             if (autoChangePlaylist) {
                                 if (currentIndex == 0 && itemsSinceLastChange > showStaticPatternEvery) {
                                     currentIndex = 1;
                                     itemsSinceLastChange = 1;
-                                    duration = autoPlayDurationSeconds * 1000;
+                                    duration =                                                                            * 1000;
                                 } else if (currentIndex == 1 && itemsSinceLastChange > 0) {
                                     currentIndex = 0;
                                     itemsSinceLastChange = 1;
                                 } else {
-                                    itemsSinceLastChange ++;
+                                    itemsSinceLastChange++;
                                 }
                             }
 
@@ -417,7 +368,9 @@ public:
                             Serial.print("Playlist [");
                             Serial.print(currentIndex);
                             Serial.print("] Pattern [");
-                            playMode == Random ? Serial.print(newPlaylist->itemsRealIndex()) : Serial.print(currentPlaylist->getCurrentIndex());
+                            playMode == Random ?
+                                            Serial.print(newPlaylist->itemsRealIndex()) :
+                                            Serial.print(currentPlaylist->getCurrentIndex());
                             Serial.print("] is playing for [");
                             Serial.print(duration / 1000);
                             Serial.print("] seconds.");
@@ -425,7 +378,7 @@ public:
 
                             autoPlayTimeout = millis() + duration;
 
-                // change playlist too
+                            // change playlist too
 //              if (millis() - lastPlayListChange > changePlaylistEvery) {
 //                if (lastPlayListChange != 0) {
 //                    if (currentIndex < 2) {
@@ -439,19 +392,15 @@ public:
                     }
                 }
 
-                if (millis() >= requestedDelayTimeout)
-                    break;
+                if (millis() >= requestedDelayTimeout) break;
             }
         }
     }
 
     void adjustPlayMode(int d = 1) {
-        if (playMode == Random && d > 0)
-            playMode = Paused;
-        else if (playMode == Paused && d < 0)
-            playMode = Random;
-        else
-            playMode += d;
+        if (playMode == Random && d > 0) playMode = Paused;
+        else if (playMode == Paused && d < 0) playMode = Random;
+        else playMode += d;
 
         if (playMode != Paused) {
             autoPlayTimeout = millis() + (autoPlayDurationSeconds * 1000);
@@ -493,14 +442,12 @@ private:
             updateScrollText = true;
         }
 
-        if (showingBrightnessIndicator
-                && millis() >= brightnessIndicatorTimout) {
+        if (showingBrightnessIndicator && millis() >= brightnessIndicatorTimout) {
             showingBrightnessIndicator = false;
             updateScrollText = true;
         }
 
-        if (showingAudioScaleIndicator
-                && millis() >= audioScaleIndicatorTimout) {
+        if (showingAudioScaleIndicator && millis() >= audioScaleIndicatorTimout) {
             showingAudioScaleIndicator = false;
             updateScrollText = true;
         }
@@ -515,8 +462,8 @@ private:
             updateScrollText = true;
         }
 
-        if (currentIndex != previousIndex || updateScrollText || playModeChanged
-                || brightnessChanged || audioScaleChanged || paletteChanged) {
+        if (currentIndex != previousIndex || updateScrollText || playModeChanged || brightnessChanged
+                        || audioScaleChanged || paletteChanged) {
             previousIndex = currentIndex;
             updateScrollText = false;
 
@@ -529,10 +476,8 @@ private:
                 matrix.setScrollOffsetFromTop(MATRIX_HEIGHT);
                 matrix.setBackgroundBrightness(backgroundBrightness);
 
-                int level = ((float) getBrightnessLevel()
-                        / (float) (brightnessCount - 1)) * 100;
-                if (level < 1 && brightness > 0)
-                    level = 10;
+                int level = ((float) getBrightnessLevel() / (float) (brightnessCount - 1)) * 100;
+                if (level < 1 && brightness > 0) level = 10;
 
                 char text[4];
                 sprintf(text, "%3d%%", level);
@@ -549,10 +494,8 @@ private:
                 matrix.setBackgroundBrightness(backgroundBrightness);
 
                 char text[8];
-                if (audioScale == 0)
-                    sprintf(text, "Auto:%d", autoAudioScale);
-                else
-                    sprintf(text, "%d", audioScale);
+                if (audioScale == 0) sprintf(text, "Auto:%d", autoAudioScale);
+                else sprintf(text, "%d", audioScale);
 
                 matrix.drawForegroundString(1, 1, text, true);
                 Serial.print("Audio Scale Changed To: ");
@@ -565,8 +508,7 @@ private:
                 matrix.setScrollOffsetFromTop(MATRIX_HEIGHT);
                 matrix.setBackgroundBrightness(backgroundBrightness);
 
-                matrix.drawForegroundString(0, 14, effects.currentPaletteName,
-                        true);
+                matrix.drawForegroundString(0, 14, effects.currentPaletteName, true);
                 Serial.print("Current Pallette: ");
                 Serial.println(effects.currentPaletteName);
             } else if (showingPatternIndicator) {
@@ -592,20 +534,17 @@ private:
 
                 switch (playMode) {
                 case Paused:
-                    matrix.drawForegroundMonoBitmap(12, 10, pauseBitmapWidth,
-                            pauseBitmapHeight, pauseBitmap, true);
+                    matrix.drawForegroundMonoBitmap(12, 10, pauseBitmapWidth, pauseBitmapHeight, pauseBitmap, true);
                     matrix.drawForegroundString(0, 18, "  Pause", true);
                     Serial.println("PlayMode: Pause");
                     break;
                 case Autoplay:
-                    matrix.drawForegroundMonoBitmap(12, 10, playBitmapWidth,
-                            playBitmapHeight, playBitmap, true);
+                    matrix.drawForegroundMonoBitmap(12, 10, playBitmapWidth, playBitmapHeight, playBitmap, true);
                     matrix.drawForegroundString(0, 18, "Autoplay", true);
                     Serial.println("PlayMode: Autoplay");
                     break;
                 case Random:
-                    matrix.drawForegroundMonoBitmap(12, 10, playBitmapWidth,
-                            playBitmapHeight, playBitmap, true);
+                    matrix.drawForegroundMonoBitmap(12, 10, playBitmapWidth, playBitmapHeight, playBitmap, true);
                     matrix.drawForegroundString(0, 18, " Random", true);
                     Serial.println("PlayMode: Random");
                     break;
@@ -638,17 +577,14 @@ private:
                 matrix.setBackgroundBrightness(255);
             }
 
-            if (!visible && !showingPlayModeIndicator
-                    && !showingBrightnessIndicator
-                    && !showingAudioScaleIndicator && !showingPaletteIndicator
-                    && clockVisible) {
+            if (!visible && !showingPlayModeIndicator && !showingBrightnessIndicator && !showingAudioScaleIndicator
+                            && !showingPaletteIndicator && clockVisible) {
                 clockDisplay.drawFrame();
             }
 
             matrix.displayForegroundDrawing(false);
-        } else if (!visible && !showingPlayModeIndicator
-                && !showingBrightnessIndicator && !showingAudioScaleIndicator
-                && !showingPaletteIndicator && clockVisible) {
+        } else if (!visible && !showingPlayModeIndicator && !showingBrightnessIndicator && !showingAudioScaleIndicator
+                        && !showingPaletteIndicator && clockVisible) {
             matrix.clearForeground();
 
             clockDisplay.drawFrame();
@@ -685,20 +621,21 @@ private:
         // draw the current item
         unsigned int requestedDelay = 0;
 
-        if (!streaming)
-            requestedDelay = currentMenuItem->drawable->drawFrame();
+        if (!streaming) requestedDelay = currentMenuItem->drawable->drawFrame();
 
         effects.ShowFrame();
 
         unsigned int adjustment = millis() - startTime;
         requestedDelay -= adjustment;
 
-        if (requestedDelay < 0)
-            requestedDelay = 0;
+        if (requestedDelay < 0) requestedDelay = 0;
 
         //if (!isAnimating) delay(20);
         return requestedDelay;
     }
+
 };
 
 #endif
+
+
