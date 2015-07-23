@@ -97,19 +97,19 @@ Effects effects;
 tmElements_t time;
 bool isTimeAvailable = true;
 
-#include "ClockDigitalShort.h"
+#include "Clock/ClockDigitalShort.h"
 ClockDigitalShort clockDigitalShort;
 
-#include "ClockText.h"
+#include "Clock/ClockText.h"
 ClockText clockText;
 
-#include "ClockCountdown.h"
+#include "Clock/ClockCountdown.h"
 ClockCountdown clockCountdown;
 
-#include "ClockPong.h"
+#include "Clock/ClockPong.h"
 ClockPong clockPong;
 
-#include "ClockDisplay.h"
+#include "Clock/ClockDisplay.h"
 ClockDisplay clockDisplay;
 
 #include "Patterns.h"
