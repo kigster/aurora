@@ -354,7 +354,7 @@ public:
                                 if (currentIndex == 0 && itemsSinceLastChange > showStaticPatternEvery) {
                                     currentIndex = 1;
                                     itemsSinceLastChange = 1;
-                                    duration =                                                                            * 1000;
+                                    duration = autoPlayDurationSeconds * 1000;
                                 } else if (currentIndex == 1 && itemsSinceLastChange > 0) {
                                     currentIndex = 0;
                                     itemsSinceLastChange = 1;
