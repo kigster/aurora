@@ -35,6 +35,7 @@ public:
     virtual void moveRandom(int step) = 0;
     virtual int getCurrentIndex();
     virtual int itemsRealIndex();
+    ~Playlist() {}
 };
 
 #endif
